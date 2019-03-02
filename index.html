@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>by Tomás Marques</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html {
+      width: 1444px;
+      height: 824px;
+      position: relative;
+      overflow: hidden;
+      background: white;
+    }
+    body {
+      background-image: linear-gradient(0deg, #F6561F, #C74521, #8F3C35, #56354F, #1E2B68);
+      background-size: 1444px 535px;
+      margin: 0;
+      padding: 0;
+      width: 1444px;
+      height: 824px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .curiosity {
+      left: calc(50% - 105px);
+      top: 642px;
+      position: absolute;
+      width: 210px;
+      height: 105px;
+      animation: 4s tilt infinite;
+    }
+    @keyframes tilt {
+      0%{transform: rotate(0deg)}
+      20%{transform: rotate(-2deg)}
+      40%{transform: rotate(2deg)}
+      60%{transform: rotate(-2deg)}
+      80%{transform: rotate(0deg)}
+    }
+    
+    .wheel-container {
+      position: absolute;
+      width: 61px;
+      height: 61px;
+    }
+    .wheel {
+      background-image: url("assets/rover-wheel.svg");
+      width: 61px;
+      height: 61px;
+      animation: 8s rotateWheel linear infinite;
+    }
+    @keyframes rotateWheel {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .wheel-container:after {
+      position: absolute;
+      content: '';
+      background: #BFC3C9;
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      left: calc(50% - 10px);
+      top: calc(50% - 10px);
+    }
+    .wheel-container.first {
+      left: 5px;
+      bottom: 0;
+      animation: 4s shaky linear infinite;
+    }
+    @keyframes shaky {
+      0% { transform: translateY(0) }
+      4% { transform: translateY(-3px) }
+      8% { transform: translateY(3px) }
+      12% { transform: translateY(-1.5px) }
+      16% { transform: translateY(1.5px) }
+      20% { transform: translateY(0) }
+      
+      40% { transform: translateY(0) }
+      50% { transform: translateY(-3px) }
+      60% { transform: translateY(3px) }
+      70% { transform: translateY(0) }
+    }
+    .wheel-container.second {
+      left: calc(50% - 30.5px);
+      bottom: 0;
+      animation: 4s shaky linear infinite;
+      animation-delay: .2s;
+    }
+    .wheel-container.third {
+      right: 5px;
+      bottom: 0;
+      animation: 4s shaky linear infinite;
+      animation-delay: .4s;
+    }
+    .body-top {
+      border-bottom: 40px solid #EEF1F3;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      height: 0;
+      width: 210px;
+      position: relative;
+    }
+    .body-top:after {
+      position: absolute;
+      content: '';
+      border-bottom: 20px solid #B5C4C7;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      height: 0;
+      width: 185.5px;
+      top: 20px;
+      left: -25.5px;
+    }
+    .square {
+      width: 13px;
+      height: 13px;
+      background:#D3D4D3;
+      top: 22px;
+      left: 50%;
+      position: absolute;
+      z-index: 2;
+    }
+    .square.first {
+      left: calc(50% - 33px);
+    }
+    .square.second {
+      left: calc(50% - 6.5px);
+    }
+    .square.third {
+      left: calc(50% + 19px);
+    }
+    .body-bottom {
+      border-top: 40px solid #B5C4C7;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      height: 0;
+      width: 210px;
+      position: relative;
+    }
+    
+    .antenna {
+      width: 56px;
+      height: 56px;
+      position: absolute;
+      right: 24px;
+      top: -64px;
+    }
+    .antenna:after{
+      position: absolute;
+      content: '';
+      height: 8px;
+      width: 6px;
+      background: #B5C4C7;
+      bottom: -8px;
+      left: calc(50% - 3px);
+    }
+    .coin {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      position: absolute;
+      transform-style: preserve-3d;
+      animation: 4s rotate linear infinite;
+    }
+    @keyframes rotate {
+      50% {
+        transform: rotateY(180deg);
+      }
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+    
+    .back {
+      background: #3A425A;
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      backface-visibility: hidden;
+      transform: rotateY(180deg);
+    }
+    .front {
+      background-image: radial-gradient(rgb(134, 140, 144), rgb(236, 235, 238) 25%, rgb(236, 235, 238) 40%, rgb(168, 165, 167));
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      backface-visibility: hidden;
+    }
+    
+    .stick,
+    .stick-back {
+      width: 20px;
+      height: 6px;
+      background: #BDC3C7;
+      position: absolute;
+      transform-origin: left center;
+      left: 50%;
+      border-radius: 3px;
+      top: calc(50% - 3px);
+      animation: 4s scaleStick linear infinite;
+    }
+    @keyframes scaleStick {
+      0% { transform: scaleX(0) }
+      25% { transform: scaleX(-1); opacity: 1 }
+      26% { opacity:0 }
+      74% { opacity:0 }
+      75% { transform: scaleX(1); opacity: 1 }
+      100% { transform: scaleX(0) }
+    }
+    .stick-back {
+      animation: 4s scaleStickBack linear infinite;
+    }
+    
+    @keyframes scaleStickBack {
+      0% { transform: scaleX(0) }
+      25% { transform: scaleX(-1) }
+      75% { transform: scaleX(1) }
+      100% { transform: scaleX(0) }
+    }
+    
+    .ball {
+      background: #3A425A;
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+      position: absolute;
+      top: calc(50% - 6px);
+      left: calc(50% - 6px);
+      animation: 4s rotateBall linear infinite;
+    }
+    
+    @keyframes rotateBall {
+      0% {
+        transform: translateX(0px);
+      }
+      25% {
+        transform: translateX(-20px);
+      }
+      50% {
+        transform: translateX(0px);
+      }
+      75% {
+        transform: translateX(20px);
+      }
+    }
+    
+    .flip {
+      width: 28px;
+      height: 56px;
+      border-top-left-radius: 56px;
+      border-bottom-left-radius: 56px;
+      background: #3A425A;
+      animation: 4s flipRotate linear infinite;
+      transform-origin: right center;
+      position: absolute;
+    }
+    
+    @keyframes flipRotate {
+      0% {
+        transform: rotateY(180deg);
+      }
+      50% {
+        transform: rotateY(180deg);
+      }
+      51% {
+        transform: rotateY(360deg);
+      }
+      100% {
+        transform: rotateY(360deg);
+      }
+    }
+    
+    .camera {
+      left: calc(50% - 31px);
+      top: -95px;
+      width: 62px;
+      height: 34px;
+      position: absolute;
+      background: url("assets/rover-camera.svg");
+    }
+    .camera:after {
+      position: absolute;
+      content: '';
+      height: 61px;
+      width: 8px;
+      background: #B5C4C7;
+      bottom: -61px;
+      left: calc(50% - 4px);
+    }
+    
+    .arm {
+      position: absolute;
+      left: 70px;
+      top: 0px;
+    }
+    .step {
+      height: 20px;
+      width: 8px;
+      background: #B5C4C7;
+      position: absolute;
+    }
+    .step.first {
+      right: 0;
+      bottom: 0;
+    }
+    .step.second {
+      width: 7px;
+      height: 52px;
+      transform: rotate(-56deg);
+      transform-origin: right bottom;
+      right: 8px;
+      bottom: 37px;
+    }
+    .step.third {
+      width: 6px;
+      height: 34px;
+      transform-origin: center top;
+      right: 56px;
+      bottom: 30px;
+      animation: 4s hang infinite;
+    }
+    @keyframes hang {
+      0%{transform: rotate(0deg)}
+      20%{transform: rotate(10deg)}
+      40%{transform: rotate(-10deg)}
+      60%{transform: rotate(10deg)}
+      80%{transform: rotate(0deg)}
+    }
+    .claw {
+      position: absolute;
+      left: -10px;
+      bottom: -15px;
+    }
+    
+    .artic {
+      border-radius: 20px;
+      width: 20px;
+      height: 20px;
+      background: #3C435A;
+      position: absolute;
+      z-index: 10;
+    }
+    .artic.first {
+      right: -6px;
+      bottom: 19px;
+    }
+    .artic.second {
+      width: 16px;
+      height: 16px;
+      right: 51px;
+      bottom: 60px;
+    }
+    
+    .distant-stars,
+    .close-stars {
+      position: absolute;
+      width: 1588px;
+      height: auto;
+      animation: 400s panFront linear infinite;
+    }
+    .back-mountains.second {
+      left: 1588px;
+    }
+    
+    
+    .large-planet {
+      position: absolute;
+      width: 3083px;
+      height: auto;
+      left: -461px;
+      animation: 20s largePlanet linear infinite;
+    }
+    @keyframes largePlanet {
+      0% { left: -461px }
+      100% {left: -630px }
+    }
+    
+    .small-planet {
+      position: absolute;
+      width: 1444px;
+      height: auto;
+      left: -143px;
+      top: 8px;
+      animation: 20s smallPlanet linear infinite;
+    }
+    @keyframes smallPlanet {
+      0% { left: -143px }
+      100% {left: -283px }
+    }
+    
+    .back-gradient {
+      width: 1444px;
+      height: 824px;
+      background-image: linear-gradient(0deg, #F6561F, #C74521, #8F3C35, #56354F, #1E2B68);
+      background-size: 1444px 535px;
+      opacity: .5;
+    }
+    
+    .clouds {
+      background-image: url("assets/clouds.svg");
+      position: absolute;
+      width: 1444px;
+      height: 436px;
+      top: 346px;
+      animation: 140s panFront linear infinite;
+      left: -120px;
+    }
+    .clouds.second {
+      left: 1158px;
+      clip-path: polygon(166px 0, 100% 0, 100% 100%, 166px 100%);
+    }
+    
+    .back-mountains,
+    .middle-mountains,
+    .front-mountains {
+      position: absolute;
+      width: 1444px;
+      height: 824px;
+      bottom: 0;
+      left: 0px;
+      background-repeat: repeat-x;
+      background-position: left bottom;
+    }
+    .back-mountains{
+      background-image: url("assets/back-mountains.svg");
+      animation: 110s panFront linear infinite;
+    }
+    .back-mountains.second {
+      left: 1441px;
+    }
+    .middle-mountains{
+      background-image: url("assets/middle-mountains.svg");
+      animation: 80s panFront linear infinite;
+    }
+    .middle-mountains.second {
+      left: 1442px;
+    }
+    .front-mountains {
+      background-image: url("assets/front-mountains.svg");
+      animation: 50s panFront linear infinite;
+    }
+    .front-mountains.second {
+      left: 1443px;
+    }
+    @keyframes panFront {
+      0% { transform: translateX(0px) }
+      100% { transform: translateX(-1444px) }
+    }
+    
+  </style>
+</head>
+<body>
+  <img src="assets/distant-stars.svg" class="distant-stars first"/>
+  <img src="assets/distant-stars.svg" class="distant-stars second"/>
+  <img src="assets/close-stars.svg" class="close-stars first"/>
+  <img src="assets/close-stars.svg" class="close-stars second"/>
+  
+  <img src="assets/large-planet.svg" class="large-planet"/>
+  <img src="assets/small-planet.svg" class="small-planet"/>
+  
+  <div class="back-gradient"></div>
+  
+  <div class="clouds first"></div>
+  <div class="clouds second"></div>
+  
+  <div class="back-mountains first"></div>
+  <div class="back-mountains second"></div>
+  <div class="middle-mountains first"></div>
+  <div class="middle-mountains second"></div>
+  <div class="front-mountains first"></div>
+  <div class="front-mountains second"></div>
+  
+  
+  <div class="curiosity">
+    <div class="curiosity-body">
+      <div class="body-top">
+        <div class="square first"></div>
+        <div class="square second"></div>
+        <div class="square third"></div>
+      </div>
+      <div class="body-bottom"></div>
+    </div>
+    <div class="antenna">
+      <div class="stick-back"></div>
+      <div class="flip"></div>
+      <div class="coin">
+        <div class="back"></div>
+        <div class="front">     
+        </div>
+      </div>
+      <div class="stick"></div>
+      <div class="ball"></div> 
+    </div>
+    <div class="camera"></div>
+    <div class="arm">
+      <div class="step first"></div>
+      <div class="artic first"></div>
+      <div class="step second"></div>
+      <div class="artic second"></div>
+      <div class="step third">
+        <img src="assets/rover-claw.svg" class="claw"/>
+      </div>
+    </div>
+    <div class="wheel-container first">
+      <div class="wheel"></div>
+    </div>
+    <div class="wheel-container second">
+      <div class="wheel"></div>
+    </div>
+    <div class="wheel-container third">
+      <div class="wheel"></div>
+    </div>
+  </div>
+</body>
+</html>
